@@ -1,9 +1,10 @@
 <template>
     
   <div>
-    <img class="logo-circle"  src="../assets/logo.png" alt="Logo" />
     <HeaderPage/>
-    <h1>Home Page</h1>
+    <img class="logo-circle"  src="../assets/logo.png" alt="Logo" />
+    
+    <h1>Hello {{ name }}</h1>
     <input
   v-model="searchQuery"
   type="text"
@@ -41,11 +42,13 @@ import HeaderPage from './HeaderPage.vue';
 
 export default {
   name: 'HomePage',
+
   components:{
     HeaderPage
   },
   data() {
     return {
+      name:'',
       cars: [],
       searchQuery: ''
     };
@@ -67,10 +70,12 @@ export default {
     }
   },
   mounted() {
-    let user = localStorage.getItem("user-info");
-    if (!user) {
-      this.$router.push({ name: SignUp });
-    }
+  let user = localStorage.getItem("user-info");
+  if (!user) {
+    this.$router.push({ name: SignUp });
+  } else {
+    this.name = JSON.parse(user).name;
+  }
 
     // Load cars from your local JSON server (adjust URL as needed)
     fetch("http://localhost:3001/cars")
